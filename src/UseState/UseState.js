@@ -25,15 +25,15 @@ export const UseState = ({ name }) => {
       <h2>Eliminar {name}</h2>
       <p>Por favor,escribe el código de seguridad.</p>
 
-      {error && <p>Error: codigo</p>}
+      {(error && !loading) && <p>Error: codigo</p>}
       {loading && <p>Cargando...</p>}
 
       <input
         placeholder="Código de seguridad"
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={(e) => {setValue(e.target.value);}}
       />
-      <button onClick={() => setLoading(true)}>Comprobar</button>
+      <button onClick={() => setLoading(true) }>Comprobar</button>
     </div>
   );
 };
