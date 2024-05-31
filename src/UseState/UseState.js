@@ -40,11 +40,11 @@ export const UseState = ({ name }) => {
     });
   };
   const onDelete = () => {
-    setState({ ...setState, deleted: true });
+    setState({ ...state, deleted: true });
   };
   const onReset = () => {
     setState({
-      ...setState,
+      ...state,
       deleted: false,
       confirmed: false,
       value: "",
