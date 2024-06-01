@@ -5,17 +5,18 @@ const SEGURITY_CODE = "paradigma";
 export const UseReducer = ({ name }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
 
-  console.log(state)
+  const onError = () => {
+    dispatch({ type: "ERROR" });
+  };
 
- 
   React.useEffect(() => {
     if (!!state.loading) {
       setTimeout(() => {
         if (state.value === SEGURITY_CODE) {
-          dispatch({ type: "CONFIRM" }); // payload: opcional
-          // onConfirm();
+          dispatch({ type: actionTypes.CONFIRM }); // payload: opcional
         } else {
-          dispatch({ type: "ERROR" });
+          onError()
+          // dispatch({ type: "ERROR" });
         }
         // setLoading(false);
       }, 3000);
@@ -35,8 +36,8 @@ export const UseReducer = ({ name }) => {
           placeholder="Código de seguridad"
           value={state.value}
           onChange={(e) => {
-            console.log( e.target.value)
-            dispatch({ type: 'WRITE', payload: e.target.value });
+            console.log(e.target.value);
+            dispatch({ type: "WRITE", payload: e.target.value });
             // onWhite(e.target.value);
           }}
         />
@@ -86,44 +87,36 @@ export const UseReducer = ({ name }) => {
 };
 
 const initialState = {
-  value: "paradigma",
+  value: "",
   error: false,
   loading: false,
   deleted: false,
   confirmed: false,
 };
+
+//
+const actionTypes = {
+  CONFIRM: "CONFIRM",
+};
+//
 const reducerObject = (state, payload) => ({
-  'CONFIRM': {
+  [actionTypes.CONFIRM]: {
     ...state,
     loading: false,
     error: false,
     confirmed: true,
   },
-  'ERROR': {
-    ...state,
-    error: true,
-    loading: false,
-  },
-
-  'WRITE': { ...state, value: payload},
-
-  'CHECK': {
-    ...state,
-    loading: true,
-  },
-  'DELETE': { ...state, deleted: true },
-  'RESET': {
-    ...state,
-    deleted: false,
-    confirmed: false,
-    value: "",
-  },
+  ERROR: { ...state, error: true, loading: false },
+  WRITE: { ...state, value: payload },
+  CHECK: { ...state, loading: true },
+  DELETE: { ...state, deleted: true },
+  RESET: { ...state, deleted: false, confirmed: false, value: "" },
 });
 
 const reducer = (state, action) => {
-  if (reducerObject(state)[action.type]){
-      return reducerObject(state, action.payload)[action.type]
+  if (reducerObject(state)[action.type]) {
+    return reducerObject(state, action.payload)[action.type];
   } else {
-      return state;
+    return state;
   }
-}; 
+};
